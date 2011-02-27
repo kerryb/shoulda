@@ -193,7 +193,7 @@ module Shoulda # :nodoc:
         end
 
         def options_correct?
-          @options.nil? || (all_options_present && no_extra_options && option_values_correct)
+          @options.nil? || (all_options_present && option_values_correct)
         end
 
         def all_options_present
@@ -202,16 +202,6 @@ module Shoulda # :nodoc:
             true
           else
             @missing = "missing #{missing_options.first.inspect} option"
-            false
-          end
-        end
-
-        def no_extra_options
-          extra_options = reflection.options.keys - @options.keys - [:extend, :join_table]
-          if extra_options.empty?
-            true
-          else
-            @missing = "Found unexpected #{extra_options.first.inspect} option"
             false
           end
         end

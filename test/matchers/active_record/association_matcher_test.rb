@@ -97,14 +97,6 @@ class AssociationMatcherTest < ActiveSupport::TestCase # :nodoc:
         assert_rejects @matcher, Child.new, :message => /missing :touch option/
       end
 
-      should "reject an association with additional options" do
-        define_model :parent
-        define_model :child, :parent_id => :integer do
-          belongs_to :parent, :readonly => true, :touch => true, :validate => false
-        end
-        assert_rejects @matcher, Child.new, :message => /unexpected :validate option/
-      end
-
       should "reject an association with incorrect option values" do
         define_model :parent
         define_model :child, :parent_id => :integer do
@@ -239,14 +231,6 @@ class AssociationMatcherTest < ActiveSupport::TestCase # :nodoc:
         assert_rejects @matcher, Parent.new, :message => /missing :limit option/
       end
 
-      should "reject an association with additional options" do
-        define_model :child, :parent_id => :integer
-        define_model :parent do
-          has_many :children, :order => "first_name", :limit =>5, :validate => false
-        end
-        assert_rejects @matcher, Parent.new, :message => /unexpected :validate option/
-      end
-
       should "reject an association with incorrect option values" do
         define_model :child, :parent_id => :integer
         define_model :parent do
@@ -342,14 +326,6 @@ class AssociationMatcherTest < ActiveSupport::TestCase # :nodoc:
         assert_rejects @matcher, Person.new, :message => /missing :autosave option/
       end
 
-      should "reject an association with additional options" do
-        define_model :detail, :person_id => :integer
-        define_model :person do
-          has_one :detail, :readonly => true, :autosave => false, :validate => true
-        end
-        assert_rejects @matcher, Person.new, :message => /unexpected :validate option/
-      end
-
       should "reject an association with incorrect option values" do
         define_model :detail, :person_id => :integer
         define_model :person do
@@ -434,17 +410,6 @@ class AssociationMatcherTest < ActiveSupport::TestCase # :nodoc:
         define_model :people_relative, :person_id   => :integer,
           :relative_id => :integer
         assert_rejects @matcher, Person.new, :message => /missing :limit option/
-      end
-
-      should "reject an association with additional options" do
-        define_model :relatives
-        define_model :person do
-          has_and_belongs_to_many :relatives, :order => "surname", :limit =>5,
-            :validate => true
-        end
-        define_model :people_relative, :person_id   => :integer,
-          :relative_id => :integer
-        assert_rejects @matcher, Person.new, :message => /unexpected :validate option/
       end
 
       should "reject an association with incorrect option values" do
